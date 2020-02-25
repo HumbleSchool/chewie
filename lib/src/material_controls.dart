@@ -7,6 +7,8 @@ import 'package:chewie/src/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
+import '../chewie.dart';
+
 class MaterialControls extends StatefulWidget {
   const MaterialControls({Key key}) : super(key: key);
 
@@ -159,6 +161,12 @@ class _MaterialControlsState extends State<MaterialControls> {
     );
   }
 
+  void _setHideStuff(bool value) {
+    _hideStuff = value;
+    final cb = ChewieController.of(context)?.controlsVisibilityChanged;
+    if (cb != null) cb(!value);
+  }
+
   Expanded _buildHitArea() {
     return Expanded(
       child: GestureDetector(
@@ -166,7 +174,7 @@ class _MaterialControlsState extends State<MaterialControls> {
           if (_latestValue != null && _latestValue.isPlaying) {
             if (_displayTapped) {
               setState(() {
-                _hideStuff = true;
+                _setHideStuff(true);
               });
             } else
               _cancelAndRestartTimer();
@@ -174,7 +182,7 @@ class _MaterialControlsState extends State<MaterialControls> {
             _playPause();
 
             setState(() {
-              _hideStuff = true;
+              _setHideStuff(true);
             });
           }
         },
@@ -285,7 +293,7 @@ class _MaterialControlsState extends State<MaterialControls> {
     _startHideTimer();
 
     setState(() {
-      _hideStuff = false;
+      _setHideStuff(false);
       _displayTapped = true;
     });
   }
@@ -303,7 +311,7 @@ class _MaterialControlsState extends State<MaterialControls> {
     if (chewieController.showControlsOnInitialize) {
       _initTimer = Timer(Duration(milliseconds: 200), () {
         setState(() {
-          _hideStuff = false;
+          _setHideStuff(false);
         });
       });
     }
@@ -311,7 +319,7 @@ class _MaterialControlsState extends State<MaterialControls> {
 
   void _onExpandCollapse() {
     setState(() {
-      _hideStuff = true;
+      _setHideStuff(true);
 
       chewieController.toggleFullScreen();
       _showAfterExpandCollapseTimer = Timer(Duration(milliseconds: 300), () {
@@ -327,7 +335,7 @@ class _MaterialControlsState extends State<MaterialControls> {
 
     setState(() {
       if (controller.value.isPlaying) {
-        _hideStuff = false;
+        _setHideStuff(false);
         _hideTimer?.cancel();
         controller.pause();
       } else {
@@ -350,7 +358,7 @@ class _MaterialControlsState extends State<MaterialControls> {
   void _startHideTimer() {
     _hideTimer = Timer(const Duration(seconds: 3), () {
       setState(() {
-        _hideStuff = true;
+        _setHideStuff(true);
       });
     });
   }

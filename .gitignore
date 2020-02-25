@@ -11,3 +11,8 @@ pubspec.lock
 .iml
 Podfile.lock
 chewie.iml
+
+# Ignore files added by Flutter v1.12.13+hotfix.5
+.flutter-plugins-dependencies
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Flutter/Flutter.podspec

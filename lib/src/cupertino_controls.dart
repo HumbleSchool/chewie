@@ -210,6 +210,12 @@ class _CupertinoControlsState extends State<CupertinoControls> {
     );
   }
 
+  void _setHideStuff(bool value) {
+    _hideStuff = value;
+    final cb = ChewieController.of(context)?.controlsVisibilityChanged;
+    if (cb != null) cb(!value);
+  }
+
   Expanded _buildHitArea() {
     return Expanded(
       child: GestureDetector(
@@ -219,7 +225,7 @@ class _CupertinoControlsState extends State<CupertinoControls> {
                 _hideTimer?.cancel();
 
                 setState(() {
-                  _hideStuff = false;
+                  _setHideStuff(false);
                 });
               },
         child: Container(
@@ -413,7 +419,7 @@ class _CupertinoControlsState extends State<CupertinoControls> {
     _hideTimer?.cancel();
 
     setState(() {
-      _hideStuff = false;
+      _setHideStuff(false);
 
       _startHideTimer();
     });
@@ -432,7 +438,7 @@ class _CupertinoControlsState extends State<CupertinoControls> {
     if (chewieController.showControlsOnInitialize) {
       _initTimer = Timer(Duration(milliseconds: 200), () {
         setState(() {
-          _hideStuff = false;
+          _setHideStuff(false);
         });
       });
     }
@@ -440,7 +446,7 @@ class _CupertinoControlsState extends State<CupertinoControls> {
 
   void _onExpandCollapse() {
     setState(() {
-      _hideStuff = true;
+      _setHideStuff(true);
 
       chewieController.toggleFullScreen();
       _expandCollapseTimer = Timer(Duration(milliseconds: 300), () {
@@ -500,7 +506,7 @@ class _CupertinoControlsState extends State<CupertinoControls> {
 
     setState(() {
       if (controller.value.isPlaying) {
-        _hideStuff = false;
+        _setHideStuff(false);
         _hideTimer?.cancel();
         controller.pause();
       } else {
@@ -537,7 +543,7 @@ class _CupertinoControlsState extends State<CupertinoControls> {
   void _startHideTimer() {
     _hideTimer = Timer(const Duration(seconds: 3), () {
       setState(() {
-        _hideStuff = true;
+        _setHideStuff(true);
       });
     });
   }

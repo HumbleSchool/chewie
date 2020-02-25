@@ -193,6 +193,7 @@ class ChewieController extends ChangeNotifier {
       DeviceOrientation.landscapeRight,
     ],
     this.routePageBuilder = null,
+    this.controlsVisibilityChanged,
   }) : assert(videoPlayerController != null,
             'You must provide a controller to play a video') {
     _initialize();
@@ -271,6 +272,9 @@ class ChewieController extends ChangeNotifier {
 
   /// Defines a custom RoutePageBuilder for the fullscreen
   final ChewieRoutePageBuilder routePageBuilder;
+
+  /// Called whenever the controls appear or disappear
+  final void Function(bool controlsVisible) controlsVisibilityChanged;
 
   static ChewieController of(BuildContext context) {
     final chewieControllerProvider =
